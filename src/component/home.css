@@ -1,0 +1,43 @@
+.container {
+  height: 100vh;
+  padding: 5rem;
+  box-sizing: border-box;
+}
+
+.logo-animation {
+  filter: drop-shadow(0 40px 10px rgba(0, 0, 0, 0.3));
+  animation: vectorAnimation 50 infinite ease-in-out alternate;
+  -webkit-animation: vectorAnimation 1s infinite ease-in-out alternate;
+}
+.container2 {
+  align-items: center;
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  width: 100%;
+}
+.container2 video {
+  width: 60%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.495);
+  border-radius: 5px;
+  outline: none;
+}
+
+@media screen and (max-width: 600px) {
+  .container2 {
+    height: unset;
+    padding: 0 0 10vh;
+  }
+  .container2 video {
+    width: 100%;
+  }
+}
+@keyframes vectorAnimation {
+  to {
+    transform: translateY(-10px);
+    -webkit-transform: translateY(-10px);
+    -moz-transform: translateY(-10px);
+    -ms-transform: translateY(-10px);
+    -o-transform: translateY(-10px);
+  }
+}
