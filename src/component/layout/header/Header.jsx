@@ -24,6 +24,7 @@ const Header = () => {
       <ColorModeSwitcher />
       <Button
         onClick={onOpen}
+        zIndex={'overlay'}
         colorScheme="yellow"
         position="fixed"
         top="6"
