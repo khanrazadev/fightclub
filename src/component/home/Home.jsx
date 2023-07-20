@@ -2,8 +2,8 @@ import React from 'react';
 import { Button, Heading, Image, Stack, Text, VStack } from '@chakra-ui/react';
 import './home.css';
 import { Link } from 'react-router-dom';
-import logo from '../assets/images/bg.png';
-import video from '../assets/videos/homepage-add.mp4';
+import logo from '../../assets/images/bg.png';
+import video from '../../assets/videos/intro.mp4';
 const Home = () => {
   return (
     <section className="home">
@@ -36,7 +36,14 @@ const Home = () => {
         </Stack>
       </div>
       <div className="container2">
-        <video autoPlay controls src={video}></video>
+        <video
+          autoPlay
+          muted
+          controlsList="nodownload"
+          controls
+          loop
+          src={video}
+        ></video>{' '}
       </div>
     </section>
   );

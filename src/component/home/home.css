@@ -23,6 +23,21 @@
   outline: none;
 }
 
+.course {
+  margin-bottom: 1rem;
+  transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -ms-transition: all 0.5s;
+  -o-transition: all 0.5s;
+}
+.course:hover {
+  transform: translateY(-10px);
+  -webkit-transform: translateY(-10px);
+  -moz-transform: translateY(-10px);
+  -ms-transform: translateY(-10px);
+  -o-transform: translateY(-10px);
+}
 @media screen and (max-width: 600px) {
   .container2 {
     height: unset;
