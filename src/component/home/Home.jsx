@@ -1,3 +1,5 @@
+// Importing necessary modules and components
+
 import React from 'react';
 import { Button, Heading, Image, Stack, Text, VStack } from '@chakra-ui/react';
 import './home.css';
