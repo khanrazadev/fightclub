@@ -92,7 +92,7 @@ const Header = () => {
                     </Link>
 
                     <p>OR</p>
-                    <Link onClick={onClose} to={'/signup'}>
+                    <Link onClick={onClose} to={'/register'}>
                       <Button colorScheme="yellow">Sign up</Button>
                     </Link>
                   </>
