@@ -77,10 +77,30 @@ function App() {
             <Route path="*" element={<NotFound />} />
             <Route path="/paymentsuccess" element={<PaymentSuccess />} />
             <Route path="/paymentfail" element={<PaymentFail />} />
-            <Route path="/forgetpassword" element={<ForgetPassword />} />
-            <Route path="/resetpassword/:token" element={<ResetPassword />} />
 
             {/* protected routes */}
+            <Route
+              path="/resetpassword/:token"
+              element={
+                <ProtectedRoute
+                  isAuthenticated={!isAuthenticated}
+                  redirect="/profile"
+                >
+                  <ResetPassword />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/forgetpassword"
+              element={
+                <ProtectedRoute
+                  isAuthenticated={!isAuthenticated}
+                  redirect="/profile"
+                >
+                  <ForgetPassword />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/login"
               element={

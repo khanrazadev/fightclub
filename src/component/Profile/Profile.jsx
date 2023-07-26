@@ -51,7 +51,7 @@ const Profile = ({ user }) => {
       toast.success(message);
       dispatch({ type: 'clearMessage' });
     }
-  }, [dispatch]);
+  }, [dispatch, error, message]);
 
   return (
     <Container minH={'95vh'} maxW="container.lg" py="8">
