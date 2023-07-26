@@ -14,7 +14,7 @@ import {
 import { RiDashboardFill, RiLogoutBoxLine, RiMenu5Fill } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { logout } from '../../../redux/actions/userAction';
+import { logout } from '../../../redux/actions/user';
 const Header = ({ isAuthenticated = false, user }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 

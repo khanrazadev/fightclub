@@ -31,7 +31,7 @@ import Users from './component/Admin/Users/Users';
 
 // Import Redux hook
 import { useDispatch, useSelector } from 'react-redux';
-import { getMyProfile } from './redux/actions/userAction';
+import { getMyProfile } from './redux/actions/user';
 import Loader from './component/layout/Loader/Loader';
 
 function App() {
@@ -115,7 +115,7 @@ function App() {
               path="/updateprofile"
               element={
                 <ProtectedRoute isAuthenticated={isAuthenticated}>
-                  <UpdateProfile />
+                  <UpdateProfile user={user} />
                 </ProtectedRoute>
               }
             />

@@ -11,7 +11,7 @@ import {
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { register } from '../../redux/actions/userAction';
+import { register } from '../../redux/actions/user';
 
 export const fileUploadCss = {
   cursor: 'pointer',

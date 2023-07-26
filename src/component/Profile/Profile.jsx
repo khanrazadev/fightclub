@@ -18,14 +18,40 @@ import {
   VStack,
   useDisclosure,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { RiDeleteBin7Fill } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
 import { fileUploadCss } from '../Auth/Signup';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateProfilePicture } from '../../redux/actions/profile';
+import { getMyProfile } from '../../redux/actions/user';
+import { toast } from 'react-hot-toast';
 
 const Profile = ({ user }) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const changeImageSubmitHandler = () => console.log('ss');
+
+  const dispatch = useDispatch();
+  const { loading, message, error } = useSelector(state => state.profile);
+
+  const changeImageSubmitHandler = async (e, image) => {
+    e.preventDefault();
+
+    const myForm = new FormData();
+    myForm.append('file', image);
+    await dispatch(updateProfilePicture(myForm));
+    dispatch(getMyProfile());
+  };
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch({ type: 'clearError' });
+    }
+    if (message) {
+      toast.success(message);
+      dispatch({ type: 'clearMessage' });
+    }
+  }, [dispatch]);
 
   return (
     <Container minH={'95vh'} maxW="container.lg" py="8">
@@ -115,6 +141,7 @@ const Profile = ({ user }) => {
 
       <ChangePhotoModal
         isOpen={isOpen}
+        loading={loading}
         onClose={onClose}
         changeImageSubmitHandler={changeImageSubmitHandler}
       />
@@ -122,7 +149,12 @@ const Profile = ({ user }) => {
   );
 };
 
-function ChangePhotoModal({ isOpen, onClose, changeImageSubmitHandler }) {
+function ChangePhotoModal({
+  isOpen,
+  onClose,
+  changeImageSubmitHandler,
+  loading,
+}) {
   const [imagePrev, setImagePrev] = useState('');
   const [image, setImage] = useState('');
 
@@ -158,7 +190,12 @@ function ChangePhotoModal({ isOpen, onClose, changeImageSubmitHandler }) {
                   onChange={changeImage}
                 />
 
-                <Button w="full" colorScheme={'yellow'} type="submit">
+                <Button
+                  isLoading={loading}
+                  w="full"
+                  colorScheme={'yellow'}
+                  type="submit"
+                >
                   Change
                 </Button>
               </VStack>
