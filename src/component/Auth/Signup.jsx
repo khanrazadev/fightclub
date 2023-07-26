@@ -9,7 +9,9 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { register } from '../../redux/actions/userAction';
 
 export const fileUploadCss = {
   cursor: 'pointer',
@@ -39,11 +41,24 @@ const Signup = () => {
       setImage(file);
     };
   };
+
+  const dispatch = useDispatch();
+  const submitHandler = e => {
+    e.preventDefault();
+    const myForm = new FormData();
+
+    myForm.append('name', name);
+    myForm.append('email', email);
+    myForm.append('password', password);
+    myForm.append('file', image);
+
+    dispatch(register(myForm));
+  };
   return (
     <Container h={'95vh'}>
       <VStack h={'full'} spacing={'16'} justifyContent={'center'}>
         <Heading children="Registration" textTransform={'uppercase'} />
-        <form style={{ width: '100%' }}>
+        <form onSubmit={submitHandler} style={{ width: '100%' }}>
           <Box display={'flex'} justifyContent={'center'}>
             <Avatar src={imagePrev} size={'xl'} />
           </Box>
@@ -72,17 +87,6 @@ const Signup = () => {
             />
           </Box>
           <Box my={4}>
-            <FormLabel htmlFor="chooseAvatar" children="Choose avatar" />
-            <Input
-              accept="image/*"
-              id="chooseAvatar"
-              type="file"
-              focusBorderColor="yellow.500"
-              css={fileUploadStyle}
-              onChange={imageChangeHandler}
-            />
-          </Box>
-          <Box my={4}>
             <FormLabel htmlFor="password" children="Password" />
             <Input
               required
@@ -92,6 +96,17 @@ const Signup = () => {
               placeholder="Enter your password"
               type="password"
               focusBorderColor="yellow.500"
+            />
+          </Box>
+          <Box my={4}>
+            <FormLabel htmlFor="chooseAvatar" children="Choose avatar" />
+            <Input
+              accept="image/*"
+              id="chooseAvatar"
+              type="file"
+              focusBorderColor="yellow.500"
+              css={fileUploadStyle}
+              onChange={imageChangeHandler}
             />
           </Box>
           <Button colorScheme="yellow" my={'4'} type="submit">
