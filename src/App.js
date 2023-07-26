@@ -1,5 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+//import components
 import Header from './component/layout/header/Header';
 import Home from './component/home/Home';
 import Courses from './component/Courses/Courses';
@@ -23,13 +25,21 @@ import Dashboard from './component/Admin/Dashboard/Dashboard';
 import AdminCourses from './component/Admin/AdminCourses/AdminCourses';
 import CreateCourse from './component/Admin/CreateCourse/CreateCourse';
 import Users from './component/Admin/Users/Users';
+
+// Import Redux hook
+import { useSelector } from 'react-redux';
+
 function App() {
   window.addEventListener('contextmenu', e => {
     e.preventDefault();
   });
+
+  //accessing user redux state using useSelector
+  const { isAuthenticated, user } = useSelector(state => state.user);
+
   return (
     <Router>
-      <Header />
+      <Header isAuthenticated={isAuthenticated} user={user} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/courses" element={<Courses />} />

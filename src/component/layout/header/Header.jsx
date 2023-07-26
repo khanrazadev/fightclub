@@ -13,12 +13,8 @@ import {
 } from '@chakra-ui/react';
 import { RiDashboardFill, RiLogoutBoxLine, RiMenu5Fill } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
-const Header = () => {
+const Header = ({ isAuthenticated = false, user }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const isAuthenticated = false;
-  const user = {
-    role: 'admin',
-  };
   return (
     <>
       <ColorModeSwitcher />
