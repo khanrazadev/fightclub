@@ -23,40 +23,10 @@ import { RiDeleteBin7Fill } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
 import { fileUploadCss } from '../Auth/Signup';
 
-const Profile = () => {
+const Profile = ({ user }) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const changeImageSubmitHandler = () => console.log('ss');
-  const user = {
-    name: 'Raza Khan',
-    email: 'abc@gmail.com',
-    createdAt: new Date().toISOString(),
-    role: '',
-    subscription: {
-      status: 'active',
-    },
-    playlist: [
-      {
-        course: 'sasasa',
-        poster:
-          'https://w0.peakpx.com/wallpaper/915/537/HD-wallpaper-conor-mcgregor-ufc-irish-fighter-film-2017-ufc-champion-conor-mcgregor-notorious.jpg',
-      },
-      {
-        course: 'sasasa',
-        poster:
-          'https://w0.peakpx.com/wallpaper/915/537/HD-wallpaper-conor-mcgregor-ufc-irish-fighter-film-2017-ufc-champion-conor-mcgregor-notorious.jpg',
-      },
-      {
-        course: 'sasasa',
-        poster:
-          'https://w0.peakpx.com/wallpaper/915/537/HD-wallpaper-conor-mcgregor-ufc-irish-fighter-film-2017-ufc-champion-conor-mcgregor-notorious.jpg',
-      },
-      {
-        course: 'sasasa',
-        poster:
-          'https://w0.peakpx.com/wallpaper/915/537/HD-wallpaper-conor-mcgregor-ufc-irish-fighter-film-2017-ufc-champion-conor-mcgregor-notorious.jpg',
-      },
-    ],
-  };
+
   return (
     <Container minH={'95vh'} maxW="container.lg" py="8">
       <Heading children="Profile" m="8" textTransform={'uppercase'} />
@@ -68,7 +38,7 @@ const Profile = () => {
         padding="8"
       >
         <VStack>
-          <Avatar boxSize={48} />
+          <Avatar boxSize={48} src={user.avatar.url} />
           <Button onClick={onOpen} variant={'ghost'} colorScheme="yellow">
             Change Photo
           </Button>
