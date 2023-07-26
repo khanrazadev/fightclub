@@ -2,6 +2,7 @@ import React from 'react';
 import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
+import { ProtectedRoute } from 'protected-route-react';
 
 //import components
 import Header from './component/layout/header/Header';
@@ -65,9 +66,26 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/courses" element={<Courses />} />
         <Route path="/course/:id" element={<CourseDetail />} />
-        <Route path="/login" element={<Login />} />
+        <Route
+          path="/login"
+          element={
+            <ProtectedRoute
+              isAuthenticated={!isAuthenticated}
+              redirect="/profile"
+            >
+              <Login />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/register" element={<Signup />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute isAuthenticated={isAuthenticated}>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/updateprofile" element={<UpdateProfile />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/paymentsuccess" element={<PaymentSuccess />} />

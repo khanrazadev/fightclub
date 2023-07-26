@@ -13,8 +13,16 @@ import {
 } from '@chakra-ui/react';
 import { RiDashboardFill, RiLogoutBoxLine, RiMenu5Fill } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../../redux/actions/userAction';
 const Header = ({ isAuthenticated = false, user }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const dispatch = useDispatch();
+  const logoutHandler = () => {
+    onClose();
+    dispatch(logout());
+  };
   return (
     <>
       <ColorModeSwitcher />
@@ -66,7 +74,7 @@ const Header = ({ isAuthenticated = false, user }) => {
                             Profile
                           </Button>
                         </Link>
-                        <Button variant={'ghost'}>
+                        <Button variant={'ghost'} onClick={logoutHandler}>
                           <RiLogoutBoxLine />
                           Logout
                         </Button>
