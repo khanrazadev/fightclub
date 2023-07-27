@@ -91,7 +91,6 @@ const TandC = ({ termsAndConditions }) => (
 const VideoPlayer = () => (
   <Box>
     <video
-      textAlign={['center', 'left']}
       autoPlay
       muted
       controlsList="nodownload"

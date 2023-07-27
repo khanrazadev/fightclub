@@ -5,7 +5,6 @@ import { useDispatch } from 'react-redux';
 const useToastNotification = ({ error, message }) => {
   const dispatch = useDispatch();
   useEffect(() => {
-    console.log('raza');
     if (error) {
       toast.error(error);
       dispatch({ type: 'clearError' });
