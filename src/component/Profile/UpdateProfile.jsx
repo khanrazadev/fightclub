@@ -1,8 +1,7 @@
 import { Button, Container, Heading, Input, VStack } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateProfile } from '../../redux/actions/profile';
-import { toast } from 'react-hot-toast';
 import { getMyProfile } from '../../redux/actions/user';
 import { useNavigate } from 'react-router-dom';
 

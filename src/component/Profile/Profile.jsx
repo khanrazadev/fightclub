@@ -18,14 +18,14 @@ import {
   VStack,
   useDisclosure,
 } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { RiDeleteBin7Fill } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
 import { fileUploadCss } from '../Auth/Signup';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateProfilePicture } from '../../redux/actions/profile';
 import { getMyProfile } from '../../redux/actions/user';
-import { toast } from 'react-hot-toast';
+import useToastNotification from '../../hooks/useToastNotification';
 
 const Profile = ({ user }) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -42,16 +42,7 @@ const Profile = ({ user }) => {
     dispatch(getMyProfile());
   };
 
-  useEffect(() => {
-    if (error) {
-      toast.error(error);
-      dispatch({ type: 'clearError' });
-    }
-    if (message) {
-      toast.success(message);
-      dispatch({ type: 'clearMessage' });
-    }
-  }, [dispatch, error, message]);
+  useToastNotification(dispatch, error, message);
 
   return (
     <Container minH={'95vh'} maxW="container.lg" py="8">

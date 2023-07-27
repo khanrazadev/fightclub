@@ -33,6 +33,7 @@ import Users from './component/Admin/Users/Users';
 import { useDispatch, useSelector } from 'react-redux';
 import { getMyProfile } from './redux/actions/user';
 import Loader from './component/layout/Loader/Loader';
+import useToastNotification from './hooks/useToastNotification';
 
 function App() {
   window.addEventListener('contextmenu', e => {
@@ -45,16 +46,7 @@ function App() {
   );
 
   const dispatch = useDispatch();
-  useEffect(() => {
-    if (error) {
-      toast.error(error);
-      dispatch({ type: 'clearError' });
-    }
-    if (message) {
-      toast.success(message);
-      dispatch({ type: 'clearMessage' });
-    }
-  }, [dispatch, error, message]);
+  useToastNotification({ error, message });
 
   useEffect(() => {
     dispatch(getMyProfile());

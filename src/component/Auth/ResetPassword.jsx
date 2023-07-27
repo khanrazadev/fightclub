@@ -1,9 +1,9 @@
 import { Button, Container, Heading, Input, VStack } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
-import { toast } from 'react-hot-toast';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { resetPassword } from '../../redux/actions/profile';
 import { useNavigate, useParams } from 'react-router-dom';
+import useToastNotification from '../../hooks/useToastNotification';
 
 const ResetPassword = () => {
   const [password, setPassword] = useState('');
@@ -18,20 +18,12 @@ const ResetPassword = () => {
     dispatch(resetPassword(params.token, password));
   };
 
-  useEffect(() => {
-    if (error) {
-      toast.error(error);
-      dispatch({ type: 'clearError' });
-    }
-    if (message) {
-      toast.success(message);
-      dispatch({ type: 'clearMessage' });
-      // Wait for 1 seconds before navigating to '/login'
-      setTimeout(function () {
-        navigate('/login');
-      }, 1000);
-    }
-  }, [dispatch, error, message, navigate]);
+  if (message) {
+    setTimeout(function () {
+      navigate('/login');
+    }, 2000);
+  }
+  useToastNotification({ error, message });
 
   return (
     <Container py={19} h={'90vh'}>
