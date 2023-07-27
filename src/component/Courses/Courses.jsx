@@ -9,20 +9,43 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { getAllCourses } from '../../redux/actions/course';
+import { addToPlaylist } from '../../redux/actions/profile';
+import useToastNotification from '../../hooks/useToastNotification';
+import { getMyProfile } from '../../redux/actions/user';
 
 const Courses = () => {
   const [keyword, setKeyword] = useState('');
   const [category, setCategory] = useState('');
+  const dispatch = useDispatch();
+
+  const addToPlaylistHandler = async couseId => {
+    await dispatch(addToPlaylist(couseId));
+    setTimeout(function () {
+      dispatch(getMyProfile());
+    }, 1000);
+  };
+
   const categories = [
-    'Boxing',
-    'Kickboxing',
-    'Sanda',
-    'Judo',
-    'Jujitsu',
-    'aikido',
+    'Web development',
+    'Artificial Intellegence',
+    'Data Structure & Algorithm',
+    'App Development',
+    'Data Science',
+    'Game Development',
   ];
+
+  const { loading, courses, error, message } = useSelector(
+    state => state.course
+  );
+
+  useToastNotification({ error, message });
+  useEffect(() => {
+    dispatch(getAllCourses(category, keyword));
+  }, [category, keyword, dispatch]);
   return (
     <Container minH={'95vh'} maxW={'container.lg'} paddingY={'8'}>
       <Heading textAlign={'center'} children="All Courses" m={'8'} />
@@ -54,15 +77,24 @@ const Courses = () => {
         justifyContent={['flex-start', 'space-evenly']}
         alignItems={['center', 'flex-start']}
       >
-        <CourseCard
-          views="2"
-          title="Sample 1"
-          imageSrc="https://w0.peakpx.com/wallpaper/852/140/HD-wallpaper-conor-mcgregor-mma-ufc-world-champion.jpg"
-          creator={'razri'}
-          description={'alalal'}
-          id="1"
-          lectureCount="2"
-        />
+        {courses?.length > 0 ? (
+          courses.map(item => (
+            <CourseCard
+              key={item._id}
+              views={item.views}
+              title={item.title}
+              imageSrc={item.poster.url}
+              creator={item.createdBy}
+              description={item.description}
+              id={item._id}
+              lectureCount={item.numOfVideos}
+              addToPlaylistHandler={addToPlaylistHandler}
+              laoding={loading}
+            />
+          ))
+        ) : (
+          <Heading mt={'4'} children="Course not found." />
+        )}
       </Stack>
     </Container>
   );
@@ -78,6 +110,7 @@ function CourseCard({
   lectureCount,
   description,
   lecture,
+  loading,
 }) {
   return (
     <>
@@ -118,11 +151,14 @@ function CourseCard({
           <Link to={`/course/${id}`}>
             <Button colorScheme="yellow">Watch Now</Button>
           </Link>
-          <Link to={`/course/${id}`}>
-            <Button colorScheme="yellow" variant={'ghost'}>
-              Add to playlist
-            </Button>
-          </Link>
+          <Button
+            onClick={() => addToPlaylistHandler(id)}
+            colorScheme="yellow"
+            variant={'ghost'}
+            isLoading={loading}
+          >
+            Add to playlist
+          </Button>
         </Stack>
       </VStack>
     </>

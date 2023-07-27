@@ -23,7 +23,10 @@ import { RiDeleteBin7Fill } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
 import { fileUploadCss } from '../Auth/Signup';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateProfilePicture } from '../../redux/actions/profile';
+import {
+  removeFromPlaylist,
+  updateProfilePicture,
+} from '../../redux/actions/profile';
 import { getMyProfile } from '../../redux/actions/user';
 import useToastNotification from '../../hooks/useToastNotification';
 
@@ -41,7 +44,10 @@ const Profile = ({ user }) => {
     await dispatch(updateProfilePicture(myForm));
     dispatch(getMyProfile());
   };
-
+  const removeFromPlayListHandler = async id => {
+    await dispatch(removeFromPlaylist(id));
+    dispatch(getMyProfile());
+  };
   useToastNotification(dispatch, error, message);
 
   return (
@@ -121,7 +127,9 @@ const Profile = ({ user }) => {
                   </Button>
                 </Link>
 
-                <Button>
+                <Button
+                  onClick={() => removeFromPlayListHandler(element.course)}
+                >
                   <RiDeleteBin7Fill />
                 </Button>
               </HStack>
