@@ -62,7 +62,6 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/courses" element={<Courses />} />
-            <Route path="/course/:id" element={<CourseDetail />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/request" element={<Request />} />
             <Route path="/about" element={<About />} />
@@ -71,6 +70,14 @@ function App() {
             <Route path="/paymentfail" element={<PaymentFail />} />
 
             {/* protected routes */}
+            <Route
+              path="/course/:id"
+              element={
+                <ProtectedRoute isAuthenticated={isAuthenticated}>
+                  <CourseDetail user={user} />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/resetpassword/:token"
               element={

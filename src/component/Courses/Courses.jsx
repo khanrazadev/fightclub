@@ -16,6 +16,7 @@ import { getAllCourses } from '../../redux/actions/course';
 import { addToPlaylist } from '../../redux/actions/profile';
 import useToastNotification from '../../hooks/useToastNotification';
 import { getMyProfile } from '../../redux/actions/user';
+import Loader from '../layout/Loader/Loader';
 
 const Courses = () => {
   const [keyword, setKeyword] = useState('');
@@ -30,12 +31,13 @@ const Courses = () => {
   };
 
   const categories = [
-    'Web development',
-    'Artificial Intellegence',
-    'Data Structure & Algorithm',
-    'App Development',
-    'Data Science',
-    'Game Development',
+    'Mixed Martial Arts(MMA)',
+    'Kick Boxing',
+    'Tae Kwon Do',
+    'Wrestling',
+    'Muay Thai',
+    'Boxing',
+    'Karate Kata',
   ];
 
   const { loading, courses, error, message } = useSelector(
@@ -93,7 +95,13 @@ const Courses = () => {
             />
           ))
         ) : (
-          <Heading mt={'4'} children="Course not found." />
+          <>
+            {loading ? (
+              <Loader />
+            ) : (
+              <Heading mt={'4'} children="Course not found." />
+            )}
+          </>
         )}
       </Stack>
     </Container>

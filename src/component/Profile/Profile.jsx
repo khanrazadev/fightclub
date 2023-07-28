@@ -18,7 +18,7 @@ import {
   VStack,
   useDisclosure,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { RiDeleteBin7Fill } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
 import { fileUploadCss } from '../Auth/Signup';
@@ -29,12 +29,19 @@ import {
 } from '../../redux/actions/profile';
 import { getMyProfile } from '../../redux/actions/user';
 import useToastNotification from '../../hooks/useToastNotification';
+import { cancelSubscription } from '../../redux/actions/subscription';
+import { toast } from 'react-hot-toast';
 
 const Profile = ({ user }) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   const dispatch = useDispatch();
   const { loading, message, error } = useSelector(state => state.profile);
+  const {
+    loading: subscriptionLoading,
+    message: subscriptionMessage,
+    error: subscriptionError,
+  } = useSelector(state => state.subscription);
 
   const changeImageSubmitHandler = async (e, image) => {
     e.preventDefault();
@@ -48,7 +55,31 @@ const Profile = ({ user }) => {
     await dispatch(removeFromPlaylist(id));
     dispatch(getMyProfile());
   };
-  useToastNotification(dispatch, error, message);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch({ type: 'clearError' });
+    }
+    if (message) {
+      toast.success(message);
+      dispatch({ type: 'clearMessage' });
+    }
+    if (subscriptionMessage) {
+      toast.success(subscriptionMessage);
+      dispatch(getMyProfile());
+      dispatch({ type: 'clearMessage' });
+    }
+
+    if (subscriptionError) {
+      toast.error(subscriptionError);
+      dispatch({ type: 'clearError' });
+    }
+  }, [dispatch, error, message, subscriptionError, subscriptionMessage]);
+
+  const cancelSubscriptionHandler = () => {
+    dispatch(cancelSubscription());
+  };
 
   return (
     <Container minH={'95vh'} maxW="container.lg" py="8">
@@ -83,7 +114,12 @@ const Profile = ({ user }) => {
             <HStack>
               <Text children="Subscription" fontWeight={'bold'} />
               {user.subscription && user.subscription.status === 'active' ? (
-                <Button color={'yellow.500'} variant="unstyled">
+                <Button
+                  isLoading={subscriptionLoading}
+                  onClick={cancelSubscriptionHandler}
+                  color={'yellow.500'}
+                  variant="unstyled"
+                >
                   Cancel Subscription
                 </Button>
               ) : (
