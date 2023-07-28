@@ -39,9 +39,18 @@ const Header = ({ isAuthenticated = false, user }) => {
       <Drawer isOpen={isOpen} onClose={onClose} placement="left">
         <DrawerOverlay backdropFilter="blur(3px)" />
         <DrawerContent>
-          <DrawerHeader children="FIGHT CLUB" />
+          <DrawerHeader
+            fontFamily={'monospace'}
+            children="FIGHT CLUB"
+            boxShadow={'xl'}
+            borderRadius={'lg'}
+          />
           <DrawerBody>
-            <VStack spacing={'3px'} alignItems={'flex-start'}>
+            <VStack
+              spacing={'3px'}
+              alignItems={'flex-start'}
+              fontFamily={'mono'}
+            >
               <SidebarButton onClose={onClose} url="/" title="Home" />
               <SidebarButton
                 onClose={onClose}
@@ -67,7 +76,7 @@ const Header = ({ isAuthenticated = false, user }) => {
               >
                 {isAuthenticated ? (
                   <>
-                    <VStack>
+                    <VStack fontFamily={'mono'}>
                       <HStack>
                         <Link onClick={onClose} to={'/profile'}>
                           <Button variant={'ghost'} colorScheme="yellow">
@@ -112,7 +121,15 @@ const Header = ({ isAuthenticated = false, user }) => {
 function SidebarButton({ url = '/', title = 'Home', onClose }) {
   return (
     <Link onClick={onClose} to={url}>
-      <Button variant={'ghost'}>{title}</Button>
+      <Button
+        variant={'ghost'}
+        _hover={{
+          bg: 'yellow.300',
+          color: 'black',
+        }}
+      >
+        {title}
+      </Button>
     </Link>
   );
 }

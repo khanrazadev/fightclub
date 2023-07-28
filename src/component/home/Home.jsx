@@ -11,6 +11,7 @@ const Home = () => {
     <section className="home">
       <div className="container">
         <Stack
+          fontFamily={'mono'}
           direction={['column', 'row']}
           height="100%"
           justifyContent={['center', 'space-between']}
@@ -21,7 +22,11 @@ const Home = () => {
             alignItems={['center', 'flex-end']}
             textAlign={['center', 'right']}
           >
-            <Heading children="UNLEASH YOUR INNER WARRIOR!" size="2xl" />
+            <Heading
+              fontFamily={'mono'}
+              children="UNLEASH YOUR INNER WARRIOR!"
+              size="2xl"
+            />
             <Text children="Step into the World of MMA, Boxing, Karate, Taekwondo, and More!" />
             <Link to="/courses">
               <Button size="lg" colorScheme="yellow">

@@ -1,15 +1,21 @@
 import {
   Button,
+  Card,
+  CardBody,
+  CardFooter,
   Container,
+  Divider,
   HStack,
   Heading,
   Image,
   Input,
   Stack,
   Text,
-  VStack,
 } from '@chakra-ui/react';
+
+import { ViewIcon } from '@chakra-ui/icons';
 import React, { useEffect, useState } from 'react';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getAllCourses } from '../../redux/actions/course';
@@ -31,7 +37,7 @@ const Courses = () => {
   };
 
   const categories = [
-    'Mixed Martial Arts(MMA)',
+    'Mixed Martial Arts',
     'Kick Boxing',
     'Tae Kwon Do',
     'Wrestling',
@@ -49,11 +55,17 @@ const Courses = () => {
     dispatch(getAllCourses(category, keyword));
   }, [category, keyword, dispatch]);
   return (
-    <Container minH={'95vh'} maxW={'container.lg'} paddingY={'8'}>
-      <Heading textAlign={'center'} children="All Courses" m={'8'} />
+    <Container minH={'95vh'} maxW={'container.xl'} paddingY={'8'}>
+      <Heading
+        textAlign={'center'}
+        fontFamily={'mono'}
+        children="All Courses"
+        m={'8'}
+      />
       <Input
         value={keyword}
         onChange={e => setKeyword(e.target.value)}
+        fontFamily={'mono'}
         placeholder="Search a course..."
         focusBorderColor="yellow.500"
         type="text"
@@ -69,7 +81,7 @@ const Courses = () => {
       >
         {categories.map((item, index) => (
           <Button key={index} onClick={() => setCategory(item)} minW={'60'}>
-            <Text>{item}</Text>
+            <Text fontFamily={'mono'}>{item}</Text>
           </Button>
         ))}
       </HStack>
@@ -122,53 +134,76 @@ function CourseCard({
 }) {
   return (
     <>
-      <VStack className="course" alignItems={['center', 'flex-start']}>
-        <Image src={imageSrc} boxSize={'60'} objectFit={'cover'} />
-        <Heading
-          children={title}
-          textAlign={['center', 'left']}
-          maxW={'200px'}
-          size={'sm'}
-          noOfLines={3}
-        />
-        <Text noOfLines={2} children={description} />
-        <HStack>
-          <Text
-            children={'Creator'}
-            textTransform={'uppercase'}
-            fontWeight={'bold'}
+      <Card maxW="sm" className="course" boxShadow={'md'}>
+        <CardBody>
+          <Image
+            src={imageSrc}
+            objectFit={'cover'}
+            borderRadius={'lg'}
+            boxSize={'sm'}
           />
-          <Text
-            children={creator}
-            textTransform={'uppercase'}
-            fontFamily={'body'}
-          />
-        </HStack>
-        <Heading
-          size={'xs'}
-          children={`Lectures - ${lectureCount}`}
-          textTransform={'uppercase'}
-        />
-        <Heading
-          size={'xs'}
-          children={`Views - ${views}`}
-          textTransform={'uppercase'}
-        />
+          <Stack mt="6" spacing="3">
+            <Heading size="md" fontFamily={'mono'} noOfLines={2}>
+              {title}
+            </Heading>
+            <Text
+              noOfLines={2}
+              children={description}
+              maxW={'60'}
+              fontFamily={'monospace'}
+            />
+            <HStack>
+              <Text
+                children={'Creator'}
+                fontFamily={'mono'}
+                textTransform={'uppercase'}
+                fontWeight={'bold'}
+              />
+              <Text
+                children={creator}
+                textTransform={'uppercase'}
+                fontFamily={'mono'}
+              />
+            </HStack>
 
-        <Stack direction={['column', 'row']} alignItems={'center'}>
-          <Link to={`/course/${id}`}>
-            <Button colorScheme="yellow">Watch Now</Button>
-          </Link>
-          <Button
-            onClick={() => addToPlaylistHandler(id)}
-            colorScheme="yellow"
-            variant={'ghost'}
-            isLoading={loading}
-          >
-            Add to playlist
-          </Button>
-        </Stack>
-      </VStack>
+            <HStack justifyContent={['space-between']}>
+              <Heading
+                size={'xs'}
+                children={`${lectureCount} ${
+                  lectureCount <= 1 ? 'lecture' : 'lectures'
+                }`}
+                textTransform={'uppercase'}
+                fontFamily={'mono'}
+              />
+              <HStack>
+                <ViewIcon />
+                <Text
+                  fontSize={'xs'}
+                  children={views}
+                  fontWeight={'bold'}
+                  fontFamily={'mono'}
+                />
+              </HStack>
+            </HStack>
+          </Stack>
+        </CardBody>
+        <Divider />
+        <CardFooter>
+          <Stack direction={['column', 'row']} alignItems={'center'}>
+            <Link to={`/course/${id}`}>
+              <Button colorScheme="yellow">Watch Now</Button>
+            </Link>
+            <Button
+              onClick={() => addToPlaylistHandler(id)}
+              colorScheme="yellow"
+              variant={'ghost'}
+              isLoading={loading}
+            >
+              Add to playlist
+            </Button>
+          </Stack>
+        </CardFooter>
+      </Card>
     </>
   );
 }

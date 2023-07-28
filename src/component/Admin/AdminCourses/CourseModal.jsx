@@ -11,8 +11,16 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Popover,
+  PopoverArrow,
+  PopoverBody,
+  PopoverCloseButton,
+  PopoverContent,
+  PopoverHeader,
+  PopoverTrigger,
   Stack,
   Text,
+  Textarea,
   VStack,
 } from '@chakra-ui/react';
 import React from 'react';
@@ -28,12 +36,16 @@ const CourseModal = ({
   addLectureHandler,
   courseTitle,
   lectures = [],
+  loading,
+  title,
+  setTitle,
+  video,
+  setVideo,
+  description,
+  setDescription,
+  videoPrev,
+  setVideoPrev,
 }) => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [video, setVideo] = useState('');
-  const [videoPrev, setVideoPrev] = useState('');
-
   const changeVideoHandler = e => {
     const file = e.target.files[0];
     const reader = new FileReader();
@@ -58,20 +70,24 @@ const CourseModal = ({
       scrollBehavior="inside"
     >
       <ModalOverlay />
-
       <ModalContent>
-        <ModalHeader>{courseTitle}</ModalHeader>
+        <ModalHeader
+          fontFamily={'mono'}
+          fontSize={['xs', 'md']}
+          boxShadow={'lg'}
+        >
+          {courseTitle}
+        </ModalHeader>
         <ModalCloseButton />
-
-        <ModalBody p="16">
-          <Grid templateColumns={['1fr', '3fr 1fr']}>
+        <ModalBody p={['2', '16']}>
+          <Grid templateColumns={['1fr', '3fr 1fr']} fontFamily={'mono'}>
             <Box px={['0', '16']}>
               <Box my="5">
-                <Heading children={courseTitle} />
+                <Heading fontFamily={'mono'} children={courseTitle} />
                 <Heading children={`#${id}`} size="sm" opacity={0.4} />
               </Box>
 
-              <Heading children={'Lectures'} size="lg" />
+              <Heading fontFamily={'mono'} children={'Lectures'} size="lg" />
 
               {lectures.map((item, i) => (
                 <VideoCard
@@ -82,6 +98,7 @@ const CourseModal = ({
                   lectureId={item._id}
                   courseId={id}
                   deleteButtonHandler={deleteButtonHandler}
+                  onClose={onClose}
                 />
               ))}
             </Box>
@@ -105,10 +122,12 @@ const CourseModal = ({
                     value={title}
                     onChange={e => setTitle(e.target.value)}
                   />
-                  <Input
+                  <Textarea
                     focusBorderColor="purple.300"
                     placeholder="Description"
                     value={description}
+                    h={'40'}
+                    maxH={'40'}
                     onChange={e => setDescription(e.target.value)}
                   />
 
@@ -134,7 +153,12 @@ const CourseModal = ({
                     ></video>
                   )}
 
-                  <Button w="full" colorScheme={'purple'} type="submit">
+                  <Button
+                    w="full"
+                    colorScheme={'purple'}
+                    type="submit"
+                    isLoading={loading}
+                  >
                     Upload
                   </Button>
                 </VStack>
@@ -143,7 +167,7 @@ const CourseModal = ({
           </Grid>
         </ModalBody>
 
-        <ModalFooter>
+        <ModalFooter boxShadow={'dark-lg'}>
           <Button onClick={handleClose}>Close</Button>
         </ModalFooter>
       </ModalContent>
@@ -160,6 +184,7 @@ function VideoCard({
   lectureId,
   courseId,
   deleteButtonHandler,
+  onClose,
 }) {
   return (
     <Stack
@@ -172,15 +197,33 @@ function VideoCard({
     >
       <Box>
         <Heading size={'sm'} children={`#${num} ${title}`} />
-        <Text children={description} />
+        <Text children={description} noOfLines={1} />
       </Box>
 
-      <Button
-        color={'purple.600'}
-        onClick={() => deleteButtonHandler(courseId, lectureId)}
-      >
-        <RiDeleteBin7Fill />
-      </Button>
+      <Popover>
+        <PopoverTrigger>
+          <Button color={'purple.600'}>
+            <RiDeleteBin7Fill />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent w={'40vh'}>
+          <PopoverArrow />
+          <PopoverCloseButton />
+          <PopoverHeader>Are you sure you want to delete?</PopoverHeader>
+          <PopoverBody display={'flex'} justifyContent={'space-between'}>
+            <Button
+              w={'30%'}
+              colorScheme="yellow"
+              onClick={() => deleteButtonHandler(courseId, lectureId)}
+            >
+              Yes
+            </Button>
+            <Button variant="ghost" onClick={onClose}>
+              Cancel
+            </Button>
+          </PopoverBody>
+        </PopoverContent>
+      </Popover>
     </Stack>
   );
 }

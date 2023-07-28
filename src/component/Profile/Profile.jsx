@@ -1,7 +1,15 @@
 import {
+  AbsoluteCenter,
   Avatar,
+  Box,
   Button,
+  ButtonGroup,
+  Card,
+  CardBody,
+  CardFooter,
   Container,
+  Divider,
+  Flex,
   HStack,
   Heading,
   Image,
@@ -82,11 +90,17 @@ const Profile = ({ user }) => {
   };
 
   return (
-    <Container minH={'95vh'} maxW="container.lg" py="8">
-      <Heading children="Profile" m="8" textTransform={'uppercase'} />
+    <Container minH={'95vh'} maxW="container.xl" py="8" fontFamily={'mono'}>
+      <Heading
+        children="Profile"
+        m="8"
+        textTransform={'uppercase'}
+        fontFamily={'mono'}
+      />
       <Stack
         justifyContent={'flex-start'}
         direction={['column', 'row']}
+        boxShadow={'lg'}
         alignItems={'center'}
         spacing={['8', '16']}
         padding="8"
@@ -140,8 +154,8 @@ const Profile = ({ user }) => {
           </Stack>
         </VStack>
       </Stack>
-      <Heading children="Playlist" size={'md'} my="8" />
-      {user.playlist.length > 0 && (
+      <Heading children="Playlist" size={'md'} my="8" fontFamily={'mono'} />
+      {user.playlist.length > 0 ? (
         <Stack
           direction={['column', 'row']}
           alignItems={'center'}
@@ -149,29 +163,44 @@ const Profile = ({ user }) => {
           p="4"
         >
           {user.playlist.map(element => (
-            <VStack w="48" m="2" key={element.course}>
-              <Image
-                boxSize={'full'}
-                objectFit="contain"
-                src={element.poster}
-              />
-
-              <HStack>
-                <Link to={`/course/${element.course}`}>
-                  <Button variant={'ghost'} colorScheme="yellow">
-                    Watch Now
+            <Card key={element.course} boxShadow={'lg'} className="course">
+              <CardBody>
+                <Image
+                  src={element.poster}
+                  borderRadius="lg"
+                  objectFit={'cover'}
+                  boxSize={'3xs'}
+                />
+              </CardBody>
+              <CardFooter>
+                <ButtonGroup spacing="2">
+                  <Link to={`/course/${element.course}`}>
+                    <Button variant={'ghost'} colorScheme="yellow">
+                      Watch Now
+                    </Button>
+                  </Link>
+                  <Button
+                    onClick={() => removeFromPlayListHandler(element.course)}
+                  >
+                    <RiDeleteBin7Fill />
                   </Button>
-                </Link>
-
-                <Button
-                  onClick={() => removeFromPlayListHandler(element.course)}
-                >
-                  <RiDeleteBin7Fill />
-                </Button>
-              </HStack>
-            </VStack>
+                </ButtonGroup>
+              </CardFooter>
+            </Card>
           ))}
         </Stack>
+      ) : (
+        <Box
+          position="relative"
+          boxShadow={'lg'}
+          borderRadius={'lg'}
+          padding="10"
+        >
+          <Divider />
+          <AbsoluteCenter fontFamily={'mono'} bg="white" px="4">
+            No video
+          </AbsoluteCenter>
+        </Box>
       )}
 
       <ChangePhotoModal

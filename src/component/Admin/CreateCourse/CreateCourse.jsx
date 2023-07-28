@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   Container,
@@ -7,19 +7,25 @@ import {
   Image,
   Input,
   Select,
+  Textarea,
   VStack,
 } from '@chakra-ui/react';
 import Sidebar from '../Sidebar';
 import cursor from '../../../assets/images/cursor.png';
 import { fileUploadCss } from '../../Auth/Signup';
+import { useDispatch, useSelector } from 'react-redux';
+import { createCourse } from '../../../redux/actions/admin';
+import toast from 'react-hot-toast';
+
 const CreateCourse = () => {
-  const submitHandler = () => {};
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [createdBy, setCreatedBy] = useState('');
   const [category, setCategory] = useState('');
   const [imagePrev, setImagePrev] = useState('');
   const [image, setImage] = useState('');
+  const dispatch = useDispatch();
+  const { loading, error, message } = useSelector(state => state.admin);
 
   const imageChangeHandler = e => {
     const file = e.target.files[0];
@@ -31,14 +37,47 @@ const CreateCourse = () => {
     };
   };
 
+  const submitHandler = e => {
+    e.preventDefault();
+    const myForm = new FormData();
+    myForm.append('title', title);
+    myForm.append('description', description);
+    myForm.append('category', category);
+    myForm.append('createdBy', createdBy);
+    myForm.append('file', image);
+    dispatch(createCourse(myForm));
+  };
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch({ type: 'clearError' });
+    }
+
+    if (message) {
+      toast.success(message);
+      dispatch({ type: 'clearMessage' });
+      if (message) {
+        setTitle('');
+        setDescription('');
+        setCategory('');
+        setCreatedBy('');
+        setImagePrev('');
+        setImage('');
+      }
+    }
+  }, [dispatch, error, message]);
+
   const categories = [
+    'Mixed Martial Arts',
+    'Kick Boxing',
+    'Tae Kwon Do',
+    'Wrestling',
+    'Muay Thai',
     'Boxing',
-    'Kickboxing',
-    'Sanda',
-    'Judo',
-    'Jujitsu',
-    'aikido',
+    'Karate Kata',
   ];
+
   return (
     <Grid
       css={{
@@ -46,6 +85,7 @@ const CreateCourse = () => {
       }}
       minH={'100vh'}
       templateColumns={['1fr', '5fr 1fr']}
+      fontFamily={'mono'}
     >
       <Container py="16">
         <form onSubmit={submitHandler}>
@@ -63,13 +103,17 @@ const CreateCourse = () => {
               placeholder="Title"
               type={'text'}
               focusBorderColor="purple.300"
-            />{' '}
-            <Input
+            />
+            <Textarea
               value={description}
               onChange={e => setDescription(e.target.value)}
               placeholder="Description"
-              type={'text'}
+              resize="vertical"
               focusBorderColor="purple.300"
+              style={{
+                maxHeight: '100px',
+                overflowY: 'auto',
+              }}
             />
             <Input
               value={createdBy}
@@ -83,8 +127,7 @@ const CreateCourse = () => {
               value={category}
               onChange={e => setCategory(e.target.value)}
             >
-              <option value="">Category</option>
-
+              <option>Category</option>
               {categories.map(item => (
                 <option key={item} value={item}>
                   {item}
@@ -105,9 +148,19 @@ const CreateCourse = () => {
               onChange={imageChangeHandler}
             />
             {imagePrev && (
-              <Image src={imagePrev} boxSize="64" objectFit={'contain'} />
+              <Image
+                src={imagePrev}
+                maxH={'xs'}
+                objectFit={'contain'}
+                boxShadow={'dark-lg'}
+              />
             )}
-            <Button w="full" colorScheme={'purple'} type="submit">
+            <Button
+              isLoading={loading}
+              w="full"
+              colorScheme={'purple'}
+              type="submit"
+            >
               Create
             </Button>
           </VStack>
