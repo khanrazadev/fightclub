@@ -197,7 +197,7 @@ const Profile = ({ user }) => {
           padding="10"
         >
           <Divider />
-          <AbsoluteCenter fontFamily={'mono'} bg="white" px="4">
+          <AbsoluteCenter fontFamily={'mono'} px="4">
             No video
           </AbsoluteCenter>
         </Box>

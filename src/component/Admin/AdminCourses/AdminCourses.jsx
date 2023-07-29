@@ -37,6 +37,7 @@ import {
   deleteLecture,
 } from '../../../redux/actions/admin';
 import { toast } from 'react-hot-toast';
+import Loader from '../../layout/Loader/Loader';
 
 const AdminCourses = () => {
   const { courses, lectures } = useSelector(state => state.course);
@@ -110,64 +111,68 @@ const AdminCourses = () => {
       minH={'100vh'}
       templateColumns={['1fr', '5fr 1fr']}
     >
-      <Box p={['0', '8']} overflowX="auto">
-        <Heading
-          textTransform={'uppercase'}
-          fontFamily={'mono'}
-          children="All Courses"
-          mt="16"
-          textAlign={['center', 'left']}
-        />
+      {loading || !courses ? (
+        <Loader color="purple.500" />
+      ) : (
+        <Box p={['0', '8']} overflowX="auto">
+          <Heading
+            textTransform={'uppercase'}
+            fontFamily={'mono'}
+            children="All Courses"
+            mt="16"
+            textAlign={['center', 'left']}
+          />
 
-        <TableContainer w={['100vw', 'full']} boxShadow={'lg'}>
-          <Table variant={'simple'} size="lg">
-            <TableCaption>All available courses in the database</TableCaption>
+          <TableContainer w={['100vw', 'full']} boxShadow={'lg'}>
+            <Table variant={'simple'} size="lg">
+              <TableCaption>All available courses in the database</TableCaption>
 
-            <Thead>
-              <Tr>
-                <Th>Id</Th>
-                <Th>Poster</Th>
-                <Th>Title</Th>
-                <Th>Category</Th>
-                <Th>Creator</Th>
-                <Th isNumeric>Views</Th>
-                <Th isNumeric>Lectures</Th>
-                <Th isNumeric>Action</Th>
-              </Tr>
-            </Thead>
+              <Thead>
+                <Tr>
+                  <Th>Id</Th>
+                  <Th>Poster</Th>
+                  <Th>Title</Th>
+                  <Th>Category</Th>
+                  <Th>Creator</Th>
+                  <Th isNumeric>Views</Th>
+                  <Th isNumeric>Lectures</Th>
+                  <Th isNumeric>Action</Th>
+                </Tr>
+              </Thead>
 
-            <Tbody>
-              {courses?.map(item => (
-                <Row
-                  coureDetailsHandler={coureDetailsHandler}
-                  deleteButtonHandler={deleteButtonHandler}
-                  key={item._id}
-                  item={item}
-                />
-              ))}
-            </Tbody>
-          </Table>
-        </TableContainer>
+              <Tbody>
+                {courses?.map(item => (
+                  <Row
+                    coureDetailsHandler={coureDetailsHandler}
+                    deleteButtonHandler={deleteButtonHandler}
+                    key={item._id}
+                    item={item}
+                  />
+                ))}
+              </Tbody>
+            </Table>
+          </TableContainer>
 
-        <CourseModal
-          isOpen={isOpen}
-          onClose={onClose}
-          id={courseId}
-          courseTitle={courseTitle}
-          deleteButtonHandler={deleteLectureButtonHandler}
-          addLectureHandler={addLectureHandler}
-          lectures={lectures}
-          loading={loading}
-          title={title}
-          setTitle={setTitle}
-          video={video}
-          setVideo={setVideo}
-          description={description}
-          setDescription={setDescription}
-          videoPrev={videoPrev}
-          setVideoPrev={setVideoPrev}
-        />
-      </Box>
+          <CourseModal
+            isOpen={isOpen}
+            onClose={onClose}
+            id={courseId}
+            courseTitle={courseTitle}
+            deleteButtonHandler={deleteLectureButtonHandler}
+            addLectureHandler={addLectureHandler}
+            lectures={lectures}
+            loading={loading}
+            title={title}
+            setTitle={setTitle}
+            video={video}
+            setVideo={setVideo}
+            description={description}
+            setDescription={setDescription}
+            videoPrev={videoPrev}
+            setVideoPrev={setVideoPrev}
+          />
+        </Box>
+      )}
 
       <Sidebar />
     </Grid>

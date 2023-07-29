@@ -16,6 +16,7 @@ import { fileUploadCss } from '../../Auth/Signup';
 import { useDispatch, useSelector } from 'react-redux';
 import { createCourse } from '../../../redux/actions/admin';
 import toast from 'react-hot-toast';
+import Loader from '../../layout/Loader/Loader';
 
 const CreateCourse = () => {
   const [title, setTitle] = useState('');
@@ -87,86 +88,89 @@ const CreateCourse = () => {
       templateColumns={['1fr', '5fr 1fr']}
       fontFamily={'mono'}
     >
-      <Container py="16">
-        <form onSubmit={submitHandler}>
-          <Heading
-            textTransform={'uppercase'}
-            children="Create Course"
-            my="16"
-            textAlign={['center', 'left']}
-          />
+      {loading ? (
+        <Loader color="purple.500" />
+      ) : (
+        <Container py="16">
+          <form onSubmit={submitHandler}>
+            <Heading
+              textTransform={'uppercase'}
+              children="Create Course"
+              my="16"
+              textAlign={['center', 'left']}
+            />
 
-          <VStack m="auto" spacing={'8'}>
-            <Input
-              value={title}
-              onChange={e => setTitle(e.target.value)}
-              placeholder="Title"
-              type={'text'}
-              focusBorderColor="purple.300"
-            />
-            <Textarea
-              value={description}
-              onChange={e => setDescription(e.target.value)}
-              placeholder="Description"
-              resize="vertical"
-              focusBorderColor="purple.300"
-              style={{
-                maxHeight: '100px',
-                overflowY: 'auto',
-              }}
-            />
-            <Input
-              value={createdBy}
-              onChange={e => setCreatedBy(e.target.value)}
-              placeholder="Creator Name"
-              type={'text'}
-              focusBorderColor="purple.300"
-            />
-            <Select
-              focusBorderColor="purple.300"
-              value={category}
-              onChange={e => setCategory(e.target.value)}
-            >
-              <option>Category</option>
-              {categories.map(item => (
-                <option key={item} value={item}>
-                  {item}
-                </option>
-              ))}
-            </Select>
-            <Input
-              accept="image/*"
-              required
-              type={'file'}
-              focusBorderColor="purple.300"
-              css={{
-                '&::file-selector-button': {
-                  ...fileUploadCss,
-                  color: 'purple',
-                },
-              }}
-              onChange={imageChangeHandler}
-            />
-            {imagePrev && (
-              <Image
-                src={imagePrev}
-                maxH={'xs'}
-                objectFit={'contain'}
-                boxShadow={'dark-lg'}
+            <VStack m="auto" spacing={'8'}>
+              <Input
+                value={title}
+                onChange={e => setTitle(e.target.value)}
+                placeholder="Title"
+                type={'text'}
+                focusBorderColor="purple.300"
               />
-            )}
-            <Button
-              isLoading={loading}
-              w="full"
-              colorScheme={'purple'}
-              type="submit"
-            >
-              Create
-            </Button>
-          </VStack>
-        </form>
-      </Container>
-
+              <Textarea
+                value={description}
+                onChange={e => setDescription(e.target.value)}
+                placeholder="Description"
+                resize="vertical"
+                focusBorderColor="purple.300"
+                style={{
+                  maxHeight: '100px',
+                  overflowY: 'auto',
+                }}
+              />
+              <Input
+                value={createdBy}
+                onChange={e => setCreatedBy(e.target.value)}
+                placeholder="Creator Name"
+                type={'text'}
+                focusBorderColor="purple.300"
+              />
+              <Select
+                focusBorderColor="purple.300"
+                value={category}
+                onChange={e => setCategory(e.target.value)}
+              >
+                <option>Category</option>
+                {categories.map(item => (
+                  <option key={item} value={item}>
+                    {item}
+                  </option>
+                ))}
+              </Select>
+              <Input
+                accept="image/*"
+                required
+                type={'file'}
+                focusBorderColor="purple.300"
+                css={{
+                  '&::file-selector-button': {
+                    ...fileUploadCss,
+                    color: 'purple',
+                  },
+                }}
+                onChange={imageChangeHandler}
+              />
+              {imagePrev && (
+                <Image
+                  src={imagePrev}
+                  maxH={'xs'}
+                  objectFit={'contain'}
+                  boxShadow={'dark-lg'}
+                />
+              )}
+              <Button
+                isLoading={loading}
+                w="full"
+                colorScheme={'purple'}
+                type="submit"
+              >
+                Create
+              </Button>
+            </VStack>
+          </form>
+        </Container>
+      )}
       <Sidebar />
     </Grid>
   );
