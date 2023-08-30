@@ -54,13 +54,13 @@ function App() {
 
   return (
     <Router>
+      <Route path="/" element={<Home />} />
       {loading ? (
         <Loader />
       ) : (
         <>
           <Header isAuthenticated={isAuthenticated} user={user} />
           <Routes>
-            <Route path="/" element={<Home />} />
             <Route path="/courses" element={<Courses />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/request" element={<Request />} />
