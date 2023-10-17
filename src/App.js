@@ -32,7 +32,6 @@ import Users from './component/Admin/Users/Users';
 // Import Redux hook
 import { useDispatch, useSelector } from 'react-redux';
 import { getMyProfile } from './redux/actions/user';
-import Loader from './component/layout/Loader/Loader';
 import useToastNotification from './hooks/useToastNotification';
 
 function App() {
@@ -41,7 +40,7 @@ function App() {
   });
 
   //accessing user redux state using useSelector
-  const { isAuthenticated, user, message, error, loading } = useSelector(
+  const { isAuthenticated, user, message, error } = useSelector(
     state => state.user
   );
 
